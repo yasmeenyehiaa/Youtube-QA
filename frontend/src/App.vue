@@ -1,48 +1,120 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref } from "vue";
 import VideoSidebar from "./components/VideoSidebar.vue";
 import VideoPlayer from "./components/VideoPlayer.vue";
 import ChatPanel from "./components/ChatPanel.vue";
+import VideoOverview from "./components/VideoOverview.vue";
+import { getSessionId } from "./chatHistory";
 import { listVideos } from "./api";
 
 const videos = ref([]);
-const selectedId = ref(null);
+const currentVideoId = ref(readVideoIdFromPath());
 const seek = ref({ videoId: null, t: 0 });
-const sessionId = crypto.randomUUID();
+const error = ref("");
+const videoColumn = ref(null);
+
+const selectedVideo = computed(
+  () => videos.value.find((video) => video.video_id === currentVideoId.value) ?? null,
+);
+
+function readVideoIdFromPath() {
+  const match = window.location.pathname.match(/^\/video\/([^/]+)\/?$/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function navigateToVideo(videoId) {
+  const path = videoId ? `/video/${encodeURIComponent(videoId)}` : "/";
+  if (window.location.pathname !== path) window.history.pushState({}, "", path);
+  currentVideoId.value = videoId;
+  seek.value = { videoId, t: 0, autoplay: false };
+}
+
+function onPopState() {
+  currentVideoId.value = readVideoIdFromPath();
+}
 
 async function refresh() {
-  videos.value = await listVideos();
+  try {
+    videos.value = await listVideos();
+    if (
+      currentVideoId.value &&
+      !videos.value.some((video) => video.video_id === currentVideoId.value)
+    ) {
+      navigateToVideo(null);
+    }
+    error.value = "";
+  } catch (e) {
+    error.value = e.message;
+  }
 }
 
-function onSelect(id) {
-  selectedId.value = id;
-  seek.value = { videoId: id, t: 0 };
+async function onSeek({ videoId, t }) {
+  if (videoId !== currentVideoId.value) navigateToVideo(videoId);
+  seek.value = { videoId, t, autoplay: true };
+  await nextTick();
+  videoColumn.value?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function onSeek({ videoId, t }) {
-  selectedId.value = videoId;
-  seek.value = { videoId, t };
-}
+onMounted(() => {
+  window.addEventListener("popstate", onPopState);
+  refresh();
+});
 
-onMounted(refresh);
+onUnmounted(() => window.removeEventListener("popstate", onPopState));
 </script>
 
 <template>
-  <div class="layout">
-    <VideoSidebar
-      :videos="videos"
-      :selected-id="selectedId"
-      @select="onSelect"
-      @changed="refresh"
-    />
-    <main class="center">
-      <VideoPlayer :video-id="selectedId" :seek="seek" />
+  <div v-if="!currentVideoId" class="home-page">
+    <header class="home-header">
+      <a class="brand" href="/" @click.prevent="navigateToVideo(null)">VidQuery</a>
+    </header>
+    <main class="library-page">
+      <VideoSidebar
+        :videos="videos"
+        @select="navigateToVideo"
+        @changed="refresh"
+      />
+      <p v-if="error" class="error page-error">{{ error }}</p>
     </main>
-    <ChatPanel
-      :session-id="sessionId"
-      :video-id="selectedId"
-      :videos="videos"
-      @seek="onSeek"
-    />
+  </div>
+
+  <div v-else class="watch-page">
+    <header class="watch-header">
+      <a class="brand" href="/" @click.prevent="navigateToVideo(null)">VidQuery</a>
+      <button class="back-button" @click="navigateToVideo(null)">All videos</button>
+      <label class="video-menu">
+        <span>Jump to</span>
+        <select
+          :value="currentVideoId"
+          aria-label="Select another video"
+          @change="navigateToVideo($event.target.value)"
+        >
+          <option v-for="video in videos" :key="video.video_id" :value="video.video_id">
+            {{ video.title }}
+          </option>
+        </select>
+      </label>
+    </header>
+    <p v-if="error" class="error page-error">{{ error }}</p>
+    <main v-if="selectedVideo" class="watch-layout">
+      <section ref="videoColumn" class="video-column">
+        <VideoPlayer :video-id="selectedVideo.video_id" :seek="seek" />
+        <h1 class="watch-title">{{ selectedVideo.title }}</h1>
+        <VideoOverview
+          :key="selectedVideo.video_id"
+          :video-id="selectedVideo.video_id"
+          :overview="selectedVideo.overview"
+          @seek="onSeek"
+          @changed="refresh"
+        />
+      </section>
+      <ChatPanel
+        :key="selectedVideo.video_id"
+        :session-id="getSessionId(selectedVideo.video_id)"
+        :video-id="selectedVideo.video_id"
+        :videos="videos"
+        @seek="onSeek"
+      />
+    </main>
   </div>
 </template>

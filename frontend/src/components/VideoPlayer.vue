@@ -9,7 +9,8 @@ const props = defineProps({
 const src = computed(() => {
   if (!props.videoId) return "";
   const start = props.seek.videoId === props.videoId ? Math.floor(props.seek.t || 0) : 0;
-  return `https://www.youtube.com/embed/${props.videoId}?start=${start}&rel=0`;
+  const autoplay = props.seek.videoId === props.videoId && props.seek.autoplay ? "&autoplay=1" : "";
+  return `https://www.youtube.com/embed/${props.videoId}?start=${start}&rel=0${autoplay}`;
 });
 </script>
 

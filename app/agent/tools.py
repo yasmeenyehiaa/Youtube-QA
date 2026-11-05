@@ -1,5 +1,8 @@
+import json
+
 from langchain_core.tools import tool
 
+from app.agent.overview import get_video_overview
 from app.services import registry
 from app.services.embeddings import embed_texts
 from app.services.retrieval import retrieve
@@ -12,8 +15,7 @@ def get_title(video_id: str) -> str:
     return rec["title"] if rec else video_id
 
 
-
-def build_tools(video_id: str | None, sink: list[dict]):
+def build_tools(video_id: str, sink: list[dict]):
     seen: set[tuple[str, float]] = set()
 
     def record(hit: dict) -> None:
@@ -44,16 +46,16 @@ def build_tools(video_id: str | None, sink: list[dict]):
         return "\n".join(lines)
 
     @tool
-    def get_video_info(video_id: str) -> str:
-        """Get the title, length, and caption source of an ingested video."""
+    def get_video_info() -> str:
+        """Get the title, length, and caption source of this video."""
         rec = registry.get_video(video_id)
         if not rec:
             return "Video not found."
         return f"Title: {rec['title']}. Length: about {mmss(rec['duration_seconds'])}. Source: {rec['source']}."
 
     @tool
-    def summarize_time_range(video_id: str, start_seconds: float, end_seconds: float) -> str:
-        """Return the transcript between two timestamps, in seconds, of one video. Use this to summarize a section."""
+    def summarize_time_range(start_seconds: float, end_seconds: float) -> str:
+        """Return the transcript between two timestamps, in seconds, of this video."""
         vector = embed_texts(["summary of the video"])[0]
         rows = vector_store.fetch_time_range(video_id, vector, start_seconds, end_seconds)
         if not rows:
@@ -62,4 +64,12 @@ def build_tools(video_id: str | None, sink: list[dict]):
             record(r)
         return "\n".join(f"[{mmss(r['start'])}] {r['text']}" for r in rows)
 
-    return [search_transcript, get_video_info, summarize_time_range]
+    @tool
+    def generate_video_overview() -> str:
+        """Generate or retrieve this video's overview, chapters, and topic labels. Use for requests for an overall summary or chapter list."""
+        try:
+            return json.dumps(get_video_overview(video_id), ensure_ascii=False)
+        except ValueError as exc:
+            return f"Overview unavailable: {exc}"
+
+    return [search_transcript, get_video_info, summarize_time_range, generate_video_overview]

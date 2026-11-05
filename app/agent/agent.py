@@ -4,14 +4,15 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
 from app.agent.tools import build_tools
-from app.config import OPENAI_API_KEY, OPENAI_CHAT_MODEL
+from app.config import MAX_AGENT_ITERATIONS, OPENAI_API_KEY, OPENAI_CHAT_MODEL
 
 SYSTEM = """You answer questions about YouTube videos using only the results of your tools.
 
-Scope: {scope}
+You may only use evidence from this video.
 
 Rules:
-- For any question about video content, call search_transcript first. 
+- For questions about specific video content, call search_transcript first.
+- For an overall video summary or chapter list, use generate_video_overview instead.
 - Use summarize_time_range when the user asks for a summary of a section.
 - Support each claim with the timestamp of its source, written as (mm:ss), for example (12:40).
 - If the tools return nothing relevant, reply: "This isn't covered in the video."
@@ -27,7 +28,7 @@ PROMPT = ChatPromptTemplate.from_messages(
     ]
 )
 
-def run_agent(message: str, history: list[BaseMessage], video_id: str | None, sink: list[dict]) -> str:
+def run_agent(message: str, history: list[BaseMessage], video_id: str, sink: list[dict]) -> str:
     llm = ChatOpenAI(
         model=OPENAI_CHAT_MODEL, 
         api_key=OPENAI_API_KEY, 
@@ -35,18 +36,17 @@ def run_agent(message: str, history: list[BaseMessage], video_id: str | None, si
     )
     tools = build_tools(video_id, sink)
     agent = create_tool_calling_agent(llm, tools, PROMPT)
-    scope = f"video {video_id}" if video_id else "all ingested videos"
     executor = AgentExecutor(
         agent=agent, 
         tools=tools, 
-        max_iterations=4, 
+        max_iterations=MAX_AGENT_ITERATIONS,
+        early_stopping_method="generate",
         handle_parsing_errors=True
     )
     result = executor.invoke(
         {
             "input": message, 
             "chat_history": history, 
-            "scope": scope
         }
     )
     return result["output"]

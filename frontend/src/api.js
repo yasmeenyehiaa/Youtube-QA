@@ -10,6 +10,16 @@ async function parse(res) {
 
 export const listVideos = () => fetch(`${BASE}/videos`).then(parse);
 
+export const searchVideos = (query) =>
+  fetch(`${BASE}/videos/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query }),
+  }).then(parse);
+
+export const getVideoOverview = (videoId) =>
+  fetch(`${BASE}/videos/${videoId}/overview`, { method: "POST" }).then(parse);
+
 export const ingestVideo = (url) =>
   fetch(`${BASE}/videos`, {
     method: "POST",
@@ -25,6 +35,11 @@ export const sendChat = (payload) =>
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
+  }).then(parse);
+
+export const clearChat = (sessionId, videoId) =>
+  fetch(`${BASE}/chat/${encodeURIComponent(sessionId)}/${encodeURIComponent(videoId)}`, {
+    method: "DELETE",
   }).then(parse);
 
 export const transcribeAudio = (blob) => {
