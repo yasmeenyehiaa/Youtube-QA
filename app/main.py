@@ -9,6 +9,10 @@ from app.services import registry
 from app.services.ingest import ingest_video
 from app.services import vector_store
 from app.services.audio import transcribe_bytes
+from app.services.transcripts import (
+    TranscriptAccessBlocked,
+    TranscriptRetrievalError,
+)
 
 app = FastAPI(title="YouTube QA API")
 app.add_middleware(
@@ -55,6 +59,10 @@ def add_video(req: IngestRequest):
         return ingest_video(req.url)
     except ValueError as exc:
         raise HTTPException(422, str(exc))
+    except TranscriptAccessBlocked as exc:
+        raise HTTPException(503, str(exc))
+    except TranscriptRetrievalError as exc:
+        raise HTTPException(502, str(exc))
     except Exception as exc:
         raise HTTPException(500, f"Ingestion failed: {exc}")
 

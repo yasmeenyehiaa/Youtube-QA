@@ -1,9 +1,25 @@
 import re
-from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api import (
+    NoTranscriptFound,
+    RequestBlocked,
+    TranscriptsDisabled,
+    YouTubeTranscriptApi,
+    YouTubeTranscriptApiException,
+)
 from app.config import CHUNK_SECONDS, TRANSCRIPT_LANGUAGES
 
+
 class TranscriptUnavailable(Exception):
-    """The video has no usable captions. Ingestion falls back to Whisper."""
+    """The video has no usable captions, so ingestion can fall back to audio."""
+
+
+class TranscriptAccessBlocked(Exception):
+    """YouTube blocked caption retrieval from this server."""
+
+
+class TranscriptRetrievalError(Exception):
+    """Caption retrieval failed for a reason other than missing captions."""
+
 
 def extract_video_id(url_or_id: str) -> str:
     match = re.search(r"(?:v=|youtu\.be/|shorts/)([A-Za-z0-9_-]{11})", url_or_id)
@@ -17,8 +33,15 @@ def extract_video_id(url_or_id: str) -> str:
 def fetch_caption_segments(video_id: str) -> list[dict]:
     try:
         fetched = YouTubeTranscriptApi().fetch(video_id, languages=list(TRANSCRIPT_LANGUAGES))
-    except Exception as exc:
+    except RequestBlocked as exc:
+        raise TranscriptAccessBlocked(
+            "YouTube blocked caption requests from this server. Audio fallback was skipped. "
+            "Try again later, or provide an authorized transcript or audio source."
+        ) from exc
+    except (NoTranscriptFound, TranscriptsDisabled) as exc:
         raise TranscriptUnavailable(str(exc)) from exc
+    except YouTubeTranscriptApiException as exc:
+        raise TranscriptRetrievalError(f"Could not retrieve YouTube captions: {exc}") from exc
     snippets = fetched.snippets if hasattr(fetched, "snippets") else list(fetched)
     return [{"text": s.text, "start": s.start, "end": s.start + s.duration} for s in snippets]
 
