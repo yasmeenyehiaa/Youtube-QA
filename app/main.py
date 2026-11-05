@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -8,6 +8,7 @@ from app.config import CORS_ORIGINS
 from app.services import registry
 from app.services.ingest import ingest_video
 from app.services import vector_store
+from app.services.audio import transcribe_bytes
 
 app = FastAPI(title="YouTube QA API")
 app.add_middleware(
@@ -76,3 +77,14 @@ def chat(req: ChatRequest):
         raise HTTPException(502, f"Agent error: {exc}")
     add_turn(req.session_id, req.message, answer)
     return ChatResponse(answer=answer, citations=[Citation(**c) for c in sink])
+
+@app.post("/api/transcribe")
+async def transcribe(file: UploadFile = File(...)):
+    data = await file.read()
+    try:
+        result = transcribe_bytes(data, file.filename or "question.webm")
+    except ValueError as exc:
+        raise HTTPException(413, str(exc))
+    except Exception as exc:
+        raise HTTPException(502, f"Transcription failed: {exc}")
+    return {"text": result["text"]}

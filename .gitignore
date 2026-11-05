@@ -1,5 +1,5 @@
 .env
-.venv
+.venv*
 backend/data/
 frontend/node_modules/
 frontend/dist/

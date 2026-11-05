@@ -33,5 +33,19 @@
     "source": "captions",
     "chunks": 8,
     "duration_seconds": 321.12
+  },
+  "-bSkREem8dM": {
+    "video_id": "-bSkREem8dM",
+    "title": "Database vs Data Warehouse vs Data Lake | What is the Difference?",
+    "source": "captions",
+    "chunks": 8,
+    "duration_seconds": 322.07
+  },
+  "Pf-9pjJK1e0": {
+    "video_id": "Pf-9pjJK1e0",
+    "title": "SQL vs NoSQL | What's the Difference?",
+    "source": "captions",
+    "chunks": 9,
+    "duration_seconds": 356.8
   }
 }
