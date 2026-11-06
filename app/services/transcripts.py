@@ -36,7 +36,7 @@ def fetch_caption_segments(video_id: str) -> list[dict]:
         fetched = YouTubeTranscriptApi().fetch(video_id, languages=list(TRANSCRIPT_LANGUAGES))
     except RequestBlocked as exc:
         raise TranscriptAccessBlocked(
-            "YouTube blocked caption requests from this server. Audio fallback was skipped. "
+            "YouTube blocked caption requests from this server. "
             "Try again later, or provide an authorized transcript or audio source."
         ) from exc
     except (NoTranscriptFound, TranscriptsDisabled) as exc:

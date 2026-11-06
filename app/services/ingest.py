@@ -1,14 +1,18 @@
+import logging
+
 import httpx
 from app.services import registry
 from app.services.audio import transcribe_video_audio
 from app.services.embeddings import embed_texts
 from app.services.transcripts import (
-    TranscriptUnavailable,
     chunk_segments,
     extract_video_id,
     fetch_caption_segments,
 )
 from app.services.vector_store import replace_video
+
+logger = logging.getLogger(__name__)
+
 
 def fetch_title(video_id: str) -> str:
     try:
@@ -28,7 +32,12 @@ def ingest_video(url_or_id: str) -> dict:
     try:
         segments = fetch_caption_segments(video_id)
         source = "captions"
-    except TranscriptUnavailable:
+    except Exception:
+        logger.warning(
+            "Caption retrieval failed for video %s; falling back to audio transcription.",
+            video_id,
+            exc_info=True,
+        )
         segments = transcribe_video_audio(video_id)
         source = "whisper"
 
