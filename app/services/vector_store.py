@@ -46,6 +46,7 @@ def replace_video(video_id: str, chunks: list[dict], embeddings: list[list[float
                 "start": float(c["start"]),
                 "end": float(c["end"]),
                 "text": c["text"],
+                "segments": c["segments"],
             },
         }
         for i, (c, emb) in enumerate(zip(chunks, embeddings))

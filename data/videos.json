@@ -1,134 +1,53 @@
 {
-  "SLHCfIUTYZI": {
-    "video_id": "SLHCfIUTYZI",
-    "title": "What is Data Streaming?",
-    "source": "captions",
-    "chunks": 10,
-    "duration_seconds": 406.199,
-    "overview": {
-      "summary": "This video discusses data streaming, highlighting its advantages over traditional batch processing, including real-time data access and scalability. It explains how data streaming works, the architecture involved, and the pros and cons of implementing such systems. The speaker also addresses whether data streaming is only for large tech companies, concluding that it is accessible to all but may not be necessary for every business.",
-      "chapters": [
-        {
-          "title": "Introduction to Data Streaming",
-          "summary": "Overview of data streaming and its potential benefits for real-time analytics and reporting.",
-          "start_seconds": 0.24
-        },
-        {
-          "title": "Batch Scheduling vs. Data Streaming",
-          "summary": "Comparison of batch scheduling and data streaming, emphasizing the importance of real-time data access.",
-          "start_seconds": 43.52
-        },
-        {
-          "title": "Architecture of Data Streaming",
-          "summary": "Explanation of how data streaming works, including data producers, queues, and consumers.",
-          "start_seconds": 131.599
-        },
-        {
-          "title": "Pros and Cons of Data Streaming",
-          "summary": "Discussion of the advantages and challenges of implementing data streaming solutions.",
-          "start_seconds": 263.199
-        },
-        {
-          "title": "Is Data Streaming for Everyone?",
-          "summary": "Clarification that data streaming is not just for big tech companies and advice for beginners.",
-          "start_seconds": 352.16
-        }
-      ],
-      "topics": [
-        "Data Streaming",
-        "Real-Time Analytics",
-        "Batch Processing",
-        "Microservices Architecture",
-        "Cloud Services"
-      ]
-    },
-    "topics": [
-      "Data Streaming",
-      "Real-Time Analytics",
-      "Batch Processing",
-      "Microservices Architecture",
-      "Cloud Services"
-    ]
-  },
-  "tnVI3AFWPJw": {
-    "video_id": "tnVI3AFWPJw",
-    "title": "I DREAM BIG BUT DO NOTHING. the neuroscience behind why & how to fix",
-    "source": "captions",
-    "chunks": 14,
-    "duration_seconds": 579.0,
-    "overview": {
-      "summary": "In this video, Olga explains the neurological basis of procrastination, emphasizing that it is an emotion regulation issue rather than a time management problem. She discusses how negative emotions trigger avoidance behaviors, creating an avoidance loop that reinforces procrastination. To combat this, she suggests simple strategies like starting tasks for just 5-10 minutes and recognizing the emotions that lead to procrastination.",
-      "chapters": [
-        {
-          "title": "Introduction to Procrastination",
-          "summary": "Olga introduces the concept of procrastination as a neurological issue rather than laziness, referencing researcher Tim Pychyl's findings.",
-          "start_seconds": 0.0
-        },
-        {
-          "title": "Understanding the Avoidance Loop",
-          "summary": "She explains how negative emotions associated with tasks lead to avoidance behaviors, creating a cycle that reinforces procrastination.",
-          "start_seconds": 44.68
-        },
-        {
-          "title": "Breaking the Cycle of Procrastination",
-          "summary": "Olga outlines practical steps to interrupt the avoidance loop, including starting tasks for a short time and naming the emotions involved.",
-          "start_seconds": 220.8
-        },
-        {
-          "title": "Disguises of Procrastination",
-          "summary": "She discusses how perfectionism and productive procrastination can mask avoidance behaviors, leading to further procrastination.",
-          "start_seconds": 395.4
-        }
-      ],
-      "topics": [
-        "Procrastination",
-        "Emotion Regulation",
-        "Avoidance Loop",
-        "Perfectionism",
-        "Productive Procrastination"
-      ]
-    },
-    "topics": [
-      "Procrastination",
-      "Emotion Regulation",
-      "Avoidance Loop",
-      "Perfectionism",
-      "Productive Procrastination"
-    ]
-  },
-  "p6Xg6Yzx97s": {
-    "video_id": "p6Xg6Yzx97s",
-    "title": "How to make English a daily habit ",
-    "source": "captions",
-    "chunks": 9,
-    "duration_seconds": 364.76
-  },
-  "ut07G0J4tj4": {
-    "video_id": "ut07G0J4tj4",
-    "title": "7 Habits That Give You Better Dopamine Hits",
-    "source": "captions",
-    "chunks": 20,
-    "duration_seconds": 864.0
-  },
-  "6A7Rbl_FKMU": {
-    "video_id": "6A7Rbl_FKMU",
-    "title": "7 Brain Exercises to Sharpen Your Mind",
-    "source": "captions",
-    "chunks": 8,
-    "duration_seconds": 321.12
-  },
-  "-bSkREem8dM": {
-    "video_id": "-bSkREem8dM",
-    "title": "Database vs Data Warehouse vs Data Lake | What is the Difference?",
-    "source": "captions",
-    "chunks": 8,
-    "duration_seconds": 322.07
-  },
   "Pf-9pjJK1e0": {
     "video_id": "Pf-9pjJK1e0",
     "title": "SQL vs NoSQL | What's the Difference?",
     "source": "captions",
-    "chunks": 9,
-    "duration_seconds": 356.8
+    "chunks": 12,
+    "duration_seconds": 356.8,
+    "overview": {
+      "summary": "The video discusses the differences between SQL and NoSQL databases, explaining their structures, scalability, and use cases. It highlights SQL's relational database format with tables, while NoSQL can handle unstructured data and is more flexible. The presenter shares personal experiences and insights on when to use each type of database.",
+      "chapters": [
+        {
+          "title": "Introduction to SQL vs NoSQL",
+          "summary": "The presenter introduces the topic of SQL versus NoSQL databases, sharing personal confusion about NoSQL.",
+          "start_seconds": 0.16
+        },
+        {
+          "title": "Understanding SQL Databases",
+          "summary": "An explanation of SQL databases, their structure, and how they store data in tables with rows and columns.",
+          "start_seconds": 27.359
+        },
+        {
+          "title": "Scaling Databases",
+          "summary": "Discussion on vertical vs horizontal scaling in databases, with examples of how each works.",
+          "start_seconds": 57.52
+        },
+        {
+          "title": "Introduction to NoSQL Databases",
+          "summary": "Overview of NoSQL databases, their ability to store unstructured data, and types of NoSQL databases.",
+          "start_seconds": 146.4
+        },
+        {
+          "title": "Comparing SQL and NoSQL",
+          "summary": "Comparison of SQL and NoSQL databases regarding data storage, querying, and performance under different loads.",
+          "start_seconds": 237.12
+        }
+      ],
+      "topics": [
+        "SQL",
+        "NoSQL",
+        "Database Scaling",
+        "Data Storage",
+        "Querying Databases"
+      ]
+    },
+    "topics": [
+      "SQL",
+      "NoSQL",
+      "Database Scaling",
+      "Data Storage",
+      "Querying Databases"
+    ]
   }
 }

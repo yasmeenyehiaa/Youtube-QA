@@ -5,7 +5,7 @@ from langchain_core.tools import tool
 from app.agent.overview import get_video_overview
 from app.services import registry
 from app.services.embeddings import embed_texts
-from app.services.retrieval import retrieve
+from app.services.retrieval import refine_hit,retrieve
 from app.services import vector_store
 from app.utils import mmss
 
@@ -41,6 +41,7 @@ def build_tools(video_id: str, sink: list[dict]):
             return "No relevant passages found."
         lines = []
         for h in hits:
+            h = refine_hit(h, query)
             record(h)
             lines.append(f"[{mmss(h['start'])}] ({get_title(h['video_id'])}) {h['text']}")
         return "\n".join(lines)

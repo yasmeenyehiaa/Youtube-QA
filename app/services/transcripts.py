@@ -1,4 +1,6 @@
 import re
+import json
+
 from youtube_transcript_api import (
     NoTranscriptFound,
     RequestBlocked,
@@ -7,7 +9,6 @@ from youtube_transcript_api import (
     YouTubeTranscriptApiException,
 )
 from app.config import CHUNK_SECONDS, TRANSCRIPT_LANGUAGES
-
 
 class TranscriptUnavailable(Exception):
     """The video has no usable captions, so ingestion can fall back to audio."""
@@ -45,17 +46,22 @@ def fetch_caption_segments(video_id: str) -> list[dict]:
     snippets = fetched.snippets if hasattr(fetched, "snippets") else list(fetched)
     return [{"text": s.text, "start": s.start, "end": s.start + s.duration} for s in snippets]
 
-
-def chunk_segments(segments: list[dict], target_seconds: int = CHUNK_SECONDS) -> list[dict]:
-    chunks, current, start, end = [], [], None, 0.0
-    for seg in segments:
-        if start is None:
-            start = seg["start"]
-        current.append(seg["text"].strip())
-        end = seg["end"]
-        if end - start >= target_seconds:
-            chunks.append({"text": " ".join(current), "start": start, "end": end})
-            current, start = [], None
-    if current:
-        chunks.append({"text": " ".join(current), "start": start, "end": end})
+def chunk_segments(segments: list[dict], window: float = CHUNK_SECONDS, overlap: float = 5) -> list[dict]:
+    if not segments:
+        return []
+    video_end = segments[-1]["end"]
+    chunks, t = [], segments[0]["start"]
+    while t < video_end:
+        inside = [s for s in segments if s["end"] > t and s["start"] < t + window]
+        if inside:
+            chunks.append({
+                "text": " ".join(s["text"].strip() for s in inside),
+                "start": inside[0]["start"],
+                "end": inside[-1]["end"],
+                "segments": json.dumps([
+                    {"start": s["start"], "end": s["end"], "text": s["text"].strip()}
+                    for s in inside
+                ]),
+            })
+        t += window - overlap
     return chunks
