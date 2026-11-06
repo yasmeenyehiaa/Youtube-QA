@@ -114,6 +114,24 @@ function copyWithFallback(text) {
   if (!copied) throw new Error("Clipboard access is unavailable in this browser.");
 }
 
+function messageParts(message) {
+  const parts = [];
+  const boldPattern = /\*\*(.+?)\*\*/g;
+  let lastIndex = 0;
+
+  for (const match of message.matchAll(boldPattern)) {
+    const start = match.index;
+    if (start > lastIndex) parts.push({ text: message.slice(lastIndex, start), bold: false });
+    parts.push({ text: match[1], bold: true });
+    lastIndex = start + match[0].length;
+  }
+
+  if (lastIndex < message.length || parts.length === 0) {
+    parts.push({ text: message.slice(lastIndex), bold: false });
+  }
+  return parts;
+}
+
 async function clearHistory() {
   if (busy.value || !window.confirm("Clear this video's chat history?")) return;
   error.value = "";
@@ -212,7 +230,15 @@ async function toggleRecord() {
           <span aria-hidden="true">{{ copiedMessage === i ? "✓" : "▢" }}</span>
           {{ copiedMessage === i ? "Copied" : "Copy answer" }}
         </button>
-        <p class="text">{{ m.text }}</p>
+        <p class="text">
+          <template v-if="m.role === 'assistant'">
+            <template v-for="(part, partIndex) in messageParts(m.text)" :key="partIndex">
+              <strong v-if="part.bold">{{ part.text }}</strong>
+              <template v-else>{{ part.text }}</template>
+            </template>
+          </template>
+          <template v-else>{{ m.text }}</template>
+        </p>
         <div v-if="m.citations && m.citations.length" class="chips">
           <button
             v-for="c in m.citations"
