@@ -83,8 +83,12 @@ def fetch_time_range(video_id: str, vector: list[float], start_gte: float, start
         top_k=limit,
         namespace=namespace_for(video_id),
         include_metadata=True,
-        filter={"start": {"$gte": start_gte, "$lte": start_lte}},
+        filter={
+            "$and": [
+                {"start": {"$lte": start_lte}},
+                {"end": {"$gte": start_gte}},
+            ]
+        },
     )
     rows = [dict(m.metadata or {}) for m in res.matches]
     return sorted(rows, key=lambda r: r["start"])
-

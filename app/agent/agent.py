@@ -11,7 +11,9 @@ SYSTEM = """You answer questions about YouTube videos using only the results of 
 You may only use evidence from this video.
 
 Rules:
-- For questions about specific video content, call search_transcript first.
+- For questions about specific video content, call search_transcript first. When useful,
+  include up to two concise alternative phrasings in query_variants, preserving the
+  question's meaning and key entities.
 - For an overall video summary or chapter list, use generate_video_overview instead.
 - Use summarize_time_range when the user asks for a summary of a section.
 - Support each claim with the timestamp of its source, written as (mm:ss), for example (12:40).
@@ -34,7 +36,7 @@ def run_agent(message: str, history: list[BaseMessage], video_id: str, sink: lis
         api_key=OPENAI_API_KEY, 
         temperature=0
     )
-    tools = build_tools(video_id, sink)
+    tools = build_tools(video_id, sink, message)
     agent = create_tool_calling_agent(llm, tools, PROMPT)
     executor = AgentExecutor(
         agent=agent, 

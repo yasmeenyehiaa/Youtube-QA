@@ -1,65 +1,108 @@
 {
-  "-bSkREem8dM": {
-    "video_id": "-bSkREem8dM",
-    "title": "Database vs Data Warehouse vs Data Lake | What is the Difference?",
+  "SLHCfIUTYZI": {
+    "video_id": "SLHCfIUTYZI",
+    "title": "What is Data Streaming?",
+    "source": "captions",
+    "chunks": 14,
+    "duration_seconds": 406.199
+  },
+  "Pf-9pjJK1e0": {
+    "video_id": "Pf-9pjJK1e0",
+    "title": "SQL vs NoSQL | What's the Difference?",
+    "source": "captions",
+    "chunks": 12,
+    "duration_seconds": 356.8
+  },
+  "6A7Rbl_FKMU": {
+    "video_id": "6A7Rbl_FKMU",
+    "title": "7 Brain Exercises to Sharpen Your Mind",
     "source": "captions",
     "chunks": 11,
-    "duration_seconds": 322.07
-  },
-  "p6Xg6Yzx97s": {
-    "video_id": "p6Xg6Yzx97s",
-    "title": "How to make English a daily habit ",
-    "source": "captions",
-    "chunks": 13,
-    "duration_seconds": 364.76,
+    "duration_seconds": 321.12,
     "overview": {
-      "summary": "The speaker discusses how to make English a daily habit through various engaging methods such as social media, watching series, reading books, and listening to podcasts. They emphasize the importance of integrating English into daily life for effective learning.",
+      "summary": "This video presents a series of engaging brain exercises designed to enhance cognitive abilities, memory, and focus. The exercises include challenges like the shter table, multicolor text, blindfolded tasks, hand coordination, using the non-dominant hand, brain games, and limiting technology dependence.",
       "chapters": [
         {
-          "title": "Introduction to Daily English Habits",
-          "summary": "The speaker introduces the topic of making English a daily habit and suggests using entertaining methods alongside traditional learning.",
-          "start_seconds": 0.0
+          "title": "Introduction to Brain Exercises",
+          "summary": "An introduction to unique brain exercises that are fun and engaging, aimed at improving cognitive abilities.",
+          "start_seconds": 0.08
         },
         {
-          "title": "Using Social Media for Learning",
-          "summary": "The speaker recommends following English-speaking influencers on social media to learn new vocabulary and expressions, and to engage with content in English.",
-          "start_seconds": 25.72
+          "title": "Exercise 1: Shter Table",
+          "summary": "Participants locate numbers in ascending order on a grid within 30 seconds to enhance cognitive abilities.",
+          "start_seconds": 24.199
         },
         {
-          "title": "Watching Series for Practice",
-          "summary": "The speaker shares their practice of watching English series before bed to improve understanding through context, suggesting a comprehension goal of 60-70%.",
-          "start_seconds": 116.24
+          "title": "Exercise 2: Multicolor Text",
+          "summary": "Participants say the color of words instead of the words themselves to strengthen memory and multitasking skills.",
+          "start_seconds": 87.84
         },
         {
-          "title": "Reading Books and Watching Movies",
-          "summary": "The speaker discusses their love for reading books and then watching the corresponding movies to enhance understanding and creativity.",
-          "start_seconds": 205.239
+          "title": "Exercise 3: Blindfolded Tasks",
+          "summary": "Completing tasks with eyes closed to sharpen spatial memory and recall.",
+          "start_seconds": 146.599
         },
         {
-          "title": "Listening to Podcasts",
-          "summary": "The speaker suggests listening to podcasts while doing other activities to improve listening skills, despite the challenge of lacking visual context.",
-          "start_seconds": 265.44
+          "title": "Exercise 4: Hand Coordination",
+          "summary": "Participants make different hand signs to strengthen the mind-body connection.",
+          "start_seconds": 174.4
         },
         {
-          "title": "Conclusion and Advice",
-          "summary": "The speaker concludes by reinforcing the importance of daily exposure to English for effective learning and encourages viewers to adopt the discussed methods.",
-          "start_seconds": 326.08
+          "title": "Exercise 5: Using Non-Dominant Hand",
+          "summary": "Using the non-dominant hand for everyday tasks to form new neural connections.",
+          "start_seconds": 207.92
+        },
+        {
+          "title": "Exercise 6: Brain Games",
+          "summary": "Engaging in brain-challenging games to improve decision-making and memory.",
+          "start_seconds": 236.72
+        },
+        {
+          "title": "Exercise 7: Limiting Technology Dependence",
+          "summary": "Encouraging manual tasks and memory reliance to strengthen cognitive skills.",
+          "start_seconds": 265.68
+        },
+        {
+          "title": "Conclusion",
+          "summary": "Wrap-up of the exercises and encouragement to subscribe for more content.",
+          "start_seconds": 295.08
         }
       ],
       "topics": [
-        "English Learning",
-        "Social Media",
-        "Watching Series",
-        "Reading Books",
-        "Listening to Podcasts"
+        "brain exercises",
+        "cognitive abilities",
+        "memory enhancement",
+        "mind-body connection",
+        "technology dependence"
       ]
     },
     "topics": [
-      "English Learning",
-      "Social Media",
-      "Watching Series",
-      "Reading Books",
-      "Listening to Podcasts"
+      "brain exercises",
+      "cognitive abilities",
+      "memory enhancement",
+      "mind-body connection",
+      "technology dependence"
     ]
+  },
+  "ukzFI9rgwfU": {
+    "video_id": "ukzFI9rgwfU",
+    "title": "Machine Learning | What Is Machine Learning? | Introduction To Machine Learning | 2026 | Simplilearn",
+    "source": "captions",
+    "chunks": 16,
+    "duration_seconds": 468.199
+  },
+  "l_Zg237msTg": {
+    "video_id": "l_Zg237msTg",
+    "title": "Agentic AI Explained In 8 Minutes | What Is Agentic Ai And How Does It Work? | 2026 | Simplilearn",
+    "source": "captions",
+    "chunks": 17,
+    "duration_seconds": 484.24
+  },
+  "EDb37y_MhRw": {
+    "video_id": "EDb37y_MhRw",
+    "title": "Generative vs Agentic AI: Shaping the Future of AI Collaboration",
+    "source": "captions",
+    "chunks": 15,
+    "duration_seconds": 425.79900000000004
   }
 }

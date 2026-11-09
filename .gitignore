@@ -6,3 +6,4 @@ __pycache__/
 todos.md
 PROJECT_GUIDE.md
 package-lock.json
+tests/
