@@ -230,7 +230,7 @@ async function toggleRecord() {
           <span aria-hidden="true">{{ copiedMessage === i ? "✓" : "▢" }}</span>
           {{ copiedMessage === i ? "Copied" : "Copy answer" }}
         </button>
-        <p class="text">
+        <p class="text" dir="auto">
           <template v-if="m.role === 'assistant'">
             <template v-for="(part, partIndex) in messageParts(m.text)" :key="partIndex">
               <strong v-if="part.bold">{{ part.text }}</strong>

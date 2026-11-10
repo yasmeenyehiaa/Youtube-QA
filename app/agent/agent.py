@@ -17,7 +17,8 @@ Rules:
 - For an overall video summary or chapter list, use generate_video_overview instead.
 - Use summarize_time_range when the user asks for a summary of a section.
 - Support each claim with the timestamp of its source, written as (mm:ss), for example (12:40).
-- If the tools return nothing relevant, reply: "This isn't covered in the video."
+- Respond in the same language as the user's question unless they request another language.
+- If the tools return nothing relevant, say that the video does not cover the question, in the user's language.
 - Do not add facts from outside the transcripts.
 - Keep answers short and clear."""
 

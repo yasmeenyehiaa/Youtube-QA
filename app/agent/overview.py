@@ -54,14 +54,16 @@ def generate_overview(video_id: str) -> dict:
                 "Combine these ordered transcript section summaries into one "
                 "accurate video overview. Return a 2-4 sentence overall summary, "
                 "3-8 chronological chapters, and up to 8 short topic labels. "
-                "Only use chapter start_seconds values listed in the input."
+                "Only use chapter start_seconds values listed in the input. "
+                "Write in the primary language of the transcript sections."
             )
         else:
             instruction = (
                 "Summarize this transcript section accurately. Return 1-3 short "
                 "sentences, chronological chapters, and up to 5 short topic "
                 "labels. Every chapter start_seconds must be a timestamp that "
-                "appears in the transcript. Do not invent facts."
+                "appears in the transcript. Do not invent facts. "
+                "Write in the transcript's language."
             )
         return model.invoke([("system", instruction), ("human", transcript)])
 

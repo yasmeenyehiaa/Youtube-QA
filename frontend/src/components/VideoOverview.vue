@@ -46,7 +46,7 @@ async function loadOverview() {
     <p v-if="error" class="error overview-error" role="alert">{{ error }}</p>
     <p v-if="busy" class="overview-loading" role="status">Reading transcript and creating chapters…</p>
     <template v-if="data">
-      <p class="overview-summary">{{ data.summary }}</p>
+      <p class="overview-summary" dir="auto">{{ data.summary }}</p>
       <div v-if="data.topics?.length" class="topic-tags">
         <span v-for="topic in data.topics" :key="topic" class="topic-tag">{{ topic }}</span>
       </div>
@@ -60,8 +60,8 @@ async function loadOverview() {
           >
             <span class="chapter-time">{{ mmss(chapter.start_seconds) }}</span>
             <span class="chapter-content">
-              <strong>{{ chapter.title }}</strong>
-              <span>{{ chapter.summary }}</span>
+              <strong dir="auto">{{ chapter.title }}</strong>
+              <span dir="auto">{{ chapter.summary }}</span>
             </span>
           </button>
         </li>

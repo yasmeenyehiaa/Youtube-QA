@@ -4,6 +4,7 @@ import VideoSidebar from "./components/VideoSidebar.vue";
 import VideoPlayer from "./components/VideoPlayer.vue";
 import ChatPanel from "./components/ChatPanel.vue";
 import VideoOverview from "./components/VideoOverview.vue";
+import VideoExplorer from "./components/VideoExplorer.vue";
 import { getSessionId } from "./chatHistory";
 import { listVideos } from "./api";
 
@@ -13,6 +14,7 @@ const seek = ref({ videoId: null, t: 0 });
 const error = ref("");
 const videoColumn = ref(null);
 const playerHeight = ref(0);
+const explorerCollapsed = ref(false);
 
 const selectedVideo = computed(
   () => videos.value.find((video) => video.video_id === currentVideoId.value) ?? null,
@@ -32,6 +34,10 @@ function navigateToVideo(videoId) {
   if (window.location.pathname !== path) window.history.pushState({}, "", path);
   currentVideoId.value = videoId;
   seek.value = { videoId, t: 0, autoplay: false };
+}
+
+function toggleExplorer() {
+  explorerCollapsed.value = !explorerCollapsed.value;
 }
 
 function onPopState() {
@@ -84,7 +90,7 @@ onUnmounted(() => {
 <template>
   <div v-if="!currentVideoId" class="home-page">
     <header class="home-header">
-      <a class="brand" href="/" @click.prevent="navigateToVideo(null)">VidQuery</a>
+      <a class="brand" href="/" @click.prevent="navigateToVideo(null)">VideoQA</a>
     </header>
     <main class="library-page">
       <VideoSidebar
@@ -97,46 +103,41 @@ onUnmounted(() => {
   </div>
 
   <div v-else class="watch-page">
-    <header class="watch-header">
-      <a class="brand" href="/" @click.prevent="navigateToVideo(null)">VidQuery</a>
-      <button class="back-button" @click="navigateToVideo(null)">All videos</button>
-      <label class="video-menu">
-        <span>Jump to</span>
-        <select
-          :value="currentVideoId"
-          aria-label="Select another video"
-          @change="navigateToVideo($event.target.value)"
-        >
-          <option v-for="video in videos" :key="video.video_id" :value="video.video_id">
-            {{ video.title }}
-          </option>
-        </select>
-      </label>
-    </header>
-    <p v-if="error" class="error page-error">{{ error }}</p>
-    <main
-      v-if="selectedVideo"
-      class="watch-layout"
-      :style="playerHeight ? { '--player-height': `${playerHeight}px` } : undefined"
-    >
-      <div ref="videoColumn" class="video-stage">
-        <VideoPlayer :video-id="selectedVideo.video_id" :seek="seek" />
-      </div>
-      <h1 class="watch-title">{{ selectedVideo.title }}</h1>
-      <ChatPanel
-        :key="selectedVideo.video_id"
-        :session-id="getSessionId(selectedVideo.video_id)"
-        :video-id="selectedVideo.video_id"
+    <div class="app-content" :class="{ 'explorer-collapsed': explorerCollapsed }">
+      <VideoExplorer
         :videos="videos"
-        @seek="onSeek"
+        :current-video-id="currentVideoId"
+        :collapsed="explorerCollapsed"
+        @select="navigateToVideo"
+        @toggle="toggleExplorer"
       />
-      <VideoOverview
-        :key="selectedVideo.video_id"
-        :video-id="selectedVideo.video_id"
-        :overview="selectedVideo.overview"
-        @seek="onSeek"
-        @changed="refresh"
-      />
-    </main>
+      <section class="watch-content">
+        <p v-if="error" class="error page-error">{{ error }}</p>
+        <main
+          v-if="selectedVideo"
+          class="watch-layout"
+          :style="playerHeight ? { '--player-height': `${playerHeight}px` } : undefined"
+        >
+          <div ref="videoColumn" class="video-stage">
+            <VideoPlayer :video-id="selectedVideo.video_id" :seek="seek" />
+          </div>
+          <h1 class="watch-title" dir="auto">{{ selectedVideo.title }}</h1>
+          <ChatPanel
+            :key="selectedVideo.video_id"
+            :session-id="getSessionId(selectedVideo.video_id)"
+            :video-id="selectedVideo.video_id"
+            :videos="videos"
+            @seek="onSeek"
+          />
+          <VideoOverview
+            :key="selectedVideo.video_id"
+            :video-id="selectedVideo.video_id"
+            :overview="selectedVideo.overview"
+            @seek="onSeek"
+            @changed="refresh"
+          />
+        </main>
+      </section>
+    </div>
   </div>
 </template>
