@@ -66,8 +66,8 @@ client.create_examples(
                 "video_id": "SLHCfIUTYZI",
             },
             "outputs": {
-                "answer": "Learning data streaming can be challenging due to the complexity of workflows and the need to understand different data types and event arrival cadences.",
-                "evidence": "[5:07]No transcript passage answers this question.",
+                "answer": "This is not covered in the video",
+                "evidence": "No transcript passage answers this question.",
             },
         },
         # Pf-9pjJK1e0
@@ -113,7 +113,7 @@ client.create_examples(
         },
         {
             "inputs": {
-                "question": "Is sql database good for storing structured data?",
+                "question": "Are sql databases good for storing structured data?",
                 "video_id": "Pf-9pjJK1e0",
             },
             "outputs": {
@@ -134,7 +134,7 @@ client.create_examples(
         },
         {
             "inputs": {
-                "question": "What are types of machine learning?",
+                "question": "How does machines learn?",
                 "video_id": "ukzFI9rgwfU",
             },
             "outputs": {
