@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import VideoSidebar from "./components/VideoSidebar.vue";
 import VideoPlayer from "./components/VideoPlayer.vue";
 import ChatPanel from "./components/ChatPanel.vue";
@@ -12,10 +12,15 @@ const currentVideoId = ref(readVideoIdFromPath());
 const seek = ref({ videoId: null, t: 0 });
 const error = ref("");
 const videoColumn = ref(null);
+const playerHeight = ref(0);
 
 const selectedVideo = computed(
   () => videos.value.find((video) => video.video_id === currentVideoId.value) ?? null,
 );
+
+const playerResizeObserver = new ResizeObserver(([entry]) => {
+  playerHeight.value = entry.contentRect.height;
+});
 
 function readVideoIdFromPath() {
   const match = window.location.pathname.match(/^\/video\/([^/]+)\/?$/);
@@ -60,7 +65,20 @@ onMounted(() => {
   refresh();
 });
 
-onUnmounted(() => window.removeEventListener("popstate", onPopState));
+watch(
+  selectedVideo,
+  async (video) => {
+    if (!video) return;
+    await nextTick();
+    if (videoColumn.value) playerResizeObserver.observe(videoColumn.value);
+  },
+  { flush: "post" },
+);
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", onPopState);
+  playerResizeObserver.disconnect();
+});
 </script>
 
 <template>
@@ -96,24 +114,28 @@ onUnmounted(() => window.removeEventListener("popstate", onPopState));
       </label>
     </header>
     <p v-if="error" class="error page-error">{{ error }}</p>
-    <main v-if="selectedVideo" class="watch-layout">
-      <section ref="videoColumn" class="video-column">
+    <main
+      v-if="selectedVideo"
+      class="watch-layout"
+      :style="playerHeight ? { '--player-height': `${playerHeight}px` } : undefined"
+    >
+      <div ref="videoColumn" class="video-stage">
         <VideoPlayer :video-id="selectedVideo.video_id" :seek="seek" />
-        <h1 class="watch-title">{{ selectedVideo.title }}</h1>
-        <VideoOverview
-          :key="selectedVideo.video_id"
-          :video-id="selectedVideo.video_id"
-          :overview="selectedVideo.overview"
-          @seek="onSeek"
-          @changed="refresh"
-        />
-      </section>
+      </div>
+      <h1 class="watch-title">{{ selectedVideo.title }}</h1>
       <ChatPanel
         :key="selectedVideo.video_id"
         :session-id="getSessionId(selectedVideo.video_id)"
         :video-id="selectedVideo.video_id"
         :videos="videos"
         @seek="onSeek"
+      />
+      <VideoOverview
+        :key="selectedVideo.video_id"
+        :video-id="selectedVideo.video_id"
+        :overview="selectedVideo.overview"
+        @seek="onSeek"
+        @changed="refresh"
       />
     </main>
   </div>
