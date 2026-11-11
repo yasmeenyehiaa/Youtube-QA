@@ -82,7 +82,56 @@
     "title": "Machine Learning | What Is Machine Learning? | Introduction To Machine Learning | 2026 | Simplilearn",
     "source": "captions",
     "chunks": 16,
-    "duration_seconds": 468.199
+    "duration_seconds": 468.199,
+    "overview": {
+      "summary": "This section introduces the basics of machine learning, explaining how machines can learn from past data and make predictions based on human preferences. It covers different types of machine learning, including supervised, unsupervised, and reinforcement learning, using examples like song preferences and currency identification. The section concludes with applications of machine learning in various fields such as healthcare and finance.",
+      "chapters": [
+        {
+          "title": "Introduction to Machine Learning",
+          "summary": "Explains the concept of machine learning and its ability to learn from past data.",
+          "start_seconds": 0.24
+        },
+        {
+          "title": "Paul's Song Preferences",
+          "summary": "Describes how Paul decides whether he likes a song based on tempo and intensity, illustrating a basic machine learning concept.",
+          "start_seconds": 26.8
+        },
+        {
+          "title": "Classifying Songs with Machine Learning",
+          "summary": "Demonstrates how machine learning can classify songs based on past choices, introducing the k nearest neighbors algorithm.",
+          "start_seconds": 56.879
+        },
+        {
+          "title": "Supervised Learning Explained",
+          "summary": "Introduces supervised learning using an example of predicting currency based on coin weight.",
+          "start_seconds": 147.44
+        },
+        {
+          "title": "Unsupervised Learning and Reinforcement Learning",
+          "summary": "Explains unsupervised learning with player performance data and reinforcement learning through feedback mechanisms.",
+          "start_seconds": 267.52
+        },
+        {
+          "title": "Applications of Machine Learning",
+          "summary": "Discusses various applications of machine learning in healthcare, finance, and transportation.",
+          "start_seconds": 357.68
+        }
+      ],
+      "topics": [
+        "Machine Learning",
+        "Supervised Learning",
+        "Unsupervised Learning",
+        "Reinforcement Learning",
+        "Applications of Machine Learning"
+      ]
+    },
+    "topics": [
+      "Machine Learning",
+      "Supervised Learning",
+      "Unsupervised Learning",
+      "Reinforcement Learning",
+      "Applications of Machine Learning"
+    ]
   },
   "l_Zg237msTg": {
     "video_id": "l_Zg237msTg",

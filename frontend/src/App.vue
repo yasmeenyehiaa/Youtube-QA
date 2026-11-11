@@ -16,7 +16,7 @@ const seek = ref({ videoId: null, t: 0 });
 const error = ref("");
 const videoColumn = ref(null);
 const playerHeight = ref(0);
-const explorerCollapsed = ref(false);
+const explorerCollapsed = ref(true);
 
 const selectedVideo = computed(
   () => videos.value.find((video) => video.video_id === currentVideoId.value) ?? null,
@@ -34,6 +34,7 @@ function readVideoIdFromPath() {
 function navigateToVideo(videoId) {
   const path = videoId ? `/video/${encodeURIComponent(videoId)}` : "/";
   if (window.location.pathname !== path) window.history.pushState({}, "", path);
+  if (videoId) explorerCollapsed.value = true;
   currentVideoId.value = videoId;
   seek.value = { videoId, t: 0, autoplay: false };
 }
@@ -44,6 +45,7 @@ function toggleExplorer() {
 
 function onPopState() {
   currentVideoId.value = readVideoIdFromPath();
+  if (currentVideoId.value) explorerCollapsed.value = true;
 }
 
 async function refresh() {

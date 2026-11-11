@@ -6,6 +6,8 @@ from langchain_openai import ChatOpenAI
 from app.agent.tools import build_tools
 from app.config import MAX_AGENT_ITERATIONS, OPENAI_API_KEY, OPENAI_CHAT_MODEL
 
+NO_CITATIONS_MARKER = "[[NO_CITATIONS]]"
+
 SYSTEM = """You answer questions about YouTube videos using only the results of your tools.
 
 You may only use evidence from this video.
@@ -18,7 +20,8 @@ Rules:
 - Use summarize_time_range when the user asks for a summary of a section.
 - Support each claim with the timestamp of its source, written as (mm:ss), for example (12:40).
 - Respond in the same language as the user's question unless they request another language.
-- If the tools return nothing relevant, say that the video does not cover the question, in the user's language.
+- If the transcript passages do not directly answer the question, say that the video does not cover
+  the question. Include [[NO_CITATIONS]] in the response.
 - Do not add facts from outside the transcripts.
 - Keep answers short and clear."""
 
@@ -52,4 +55,8 @@ def run_agent(message: str, history: list[BaseMessage], video_id: str, sink: lis
             "chat_history": history, 
         }
     )
-    return result["output"]
+    answer = result["output"]
+    if NO_CITATIONS_MARKER in answer:
+        sink.clear()
+        return answer.replace(NO_CITATIONS_MARKER, "").strip()
+    return answer
