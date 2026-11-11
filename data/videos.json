@@ -281,5 +281,12 @@
     "source": "captions",
     "chunks": 153,
     "duration_seconds": 4564.719
+  },
+  "Au1OxVSyGas": {
+    "video_id": "Au1OxVSyGas",
+    "title": "Machine Learning Explained Simply (In 12 Minutes)",
+    "source": "whisper",
+    "chunks": 25,
+    "duration_seconds": 743.280029296875
   }
 }
