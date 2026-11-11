@@ -44,6 +44,9 @@ button:disabled { opacity: 0.55; cursor: default; }
 .remove { display: inline-flex; align-items: center; gap: 6px; margin: auto 0 0 auto; padding: 7px 11px; border: 1px solid #b7eee5; border-radius: 18px; background: #e4faf5; color: #075d73; font-size: 12px; font-weight: 700; transition: background 140ms ease, transform 140ms ease; }
 .remove:hover { transform: translateY(-1px); border-color: #80d5c7; background: #c9f1e9; color: #087e8b; }
 .empty-library { max-width: 580px; margin: 64px auto; padding: 36px 24px; border: 1px dashed #a9d8de; border-radius: 20px; background: rgb(255 255 255 / 80%); color: #66758e; text-align: center; }
+.library-loading { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.library-spinner { width: 22px; height: 22px; border: 3px solid rgb(201 0 22 / 25%); border-top-color: #c90016; border-radius: 50%; animation: library-spin 800ms linear infinite; }
+@keyframes library-spin { to { transform: rotate(360deg); } }
 .watch-header { gap: 24px; }
 .home-video-menu { margin-left: auto; }
 .back-button { padding: 8px 14px; border: 1px solid rgb(255 255 255 / 30%); border-radius: 20px; background: rgb(255 255 255 / 16%); color: #fff; font-weight: 650; }

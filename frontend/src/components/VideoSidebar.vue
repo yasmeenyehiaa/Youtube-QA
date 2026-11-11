@@ -5,6 +5,8 @@ import { mmss } from "../utils";
 
 const props = defineProps({
   videos: { type: Array, default: () => [] },
+  loading: { type: Boolean, default: false },
+  loaded: { type: Boolean, default: false },
 });
 const emit = defineEmits(["select", "changed"]);
 
@@ -170,6 +172,10 @@ async function remove(videoId) {
       </article>
     </div>
     <p v-else-if="videos.length" class="empty-library">No videos match those search filters.</p>
-    <p v-else class="empty-library">Your library is empty. Add a video to get started.</p>
+    <p v-else-if="loading" class="empty-library library-loading" role="status">
+      <span class="library-spinner" aria-hidden="true"></span>
+      <span>Loading your library…</span>
+    </p>
+    <p v-else-if="loaded" class="empty-library">Your library is empty. Add a video to get started.</p>
   </section>
 </template>

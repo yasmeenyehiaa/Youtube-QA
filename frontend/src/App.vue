@@ -9,6 +9,8 @@ import { getSessionId } from "./chatHistory";
 import { listVideos } from "./api";
 
 const videos = ref([]);
+const videosLoading = ref(true);
+const videosLoaded = ref(false);
 const currentVideoId = ref(readVideoIdFromPath());
 const seek = ref({ videoId: null, t: 0 });
 const error = ref("");
@@ -45,8 +47,10 @@ function onPopState() {
 }
 
 async function refresh() {
+  videosLoading.value = true;
   try {
     videos.value = await listVideos();
+    videosLoaded.value = true;
     if (
       currentVideoId.value &&
       !videos.value.some((video) => video.video_id === currentVideoId.value)
@@ -56,6 +60,8 @@ async function refresh() {
     error.value = "";
   } catch (e) {
     error.value = e.message;
+  } finally {
+    videosLoading.value = false;
   }
 }
 
@@ -95,6 +101,8 @@ onUnmounted(() => {
     <main class="library-page">
       <VideoSidebar
         :videos="videos"
+        :loading="videosLoading"
+        :loaded="videosLoaded"
         @select="navigateToVideo"
         @changed="refresh"
       />
